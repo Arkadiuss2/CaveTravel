@@ -8,5 +8,7 @@ public class Strength implements Skill {
         return value;
     }
 
-
+    public void setValue(double value) {
+        this.value = value;
+    }
 }

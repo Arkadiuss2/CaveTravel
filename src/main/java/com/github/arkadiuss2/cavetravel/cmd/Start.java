@@ -1,8 +1,8 @@
 package com.github.arkadiuss2.cavetravel.cmd;
 
-import com.github.arkadiuss2.cavetravel.cmd.commands.*;
+import com.github.arkadiuss2.cavetravel.cmd.commands.Command;
 
-import java.util.Scanner;
+import static com.github.arkadiuss2.cavetravel.cmd.commands.ConsoleInput.getMenuInput;
 
 public class Start {
 
@@ -13,7 +13,7 @@ public class Start {
         welcomeMessage();
         displayOptions();
         do {
-            Command inputCommand = getInput();
+            Command inputCommand = getMenuInput();
             inputCommand.execute();
         } while (!hasGameStarted);
     }
@@ -25,39 +25,6 @@ public class Start {
     private static void displayOptions() {
         System.out.println("Type: 'help' for commands");
         System.out.println("Write what do you want to do:");
-    }
-
-
-    private static String getRawInput() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine().trim();
-    }
-
-
-    private static Command getInput() {
-        String rawInput = getRawInput();
-        Command result;
-
-        switch (rawInput) {
-            case "help": {
-                result = new HelpCommand();
-                break;
-            }
-            case "new": {
-                result = new NewCommand();
-                break;
-            }
-            case "load": {
-                result = new LoadCommand();
-                break;
-            }
-            default: {
-                result = new UnsupportedCommand();
-            }
-        }
-
-        return result;
-
     }
 
 
