@@ -8,6 +8,15 @@ import static com.github.arkadiuss2.cavetravel.cmd.commands.ConsoleInput.getRawI
 
 public class NewCommand implements Command {
 
+    @Override
+    public boolean isMatched(String[] splitInput) {
+        return splitInput.length == 1 && "new".equals(splitInput[0]);
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return null;
+    }
 
     @Override
     public void execute() {

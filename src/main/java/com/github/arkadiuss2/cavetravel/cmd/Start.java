@@ -2,7 +2,11 @@ package com.github.arkadiuss2.cavetravel.cmd;
 
 import com.github.arkadiuss2.cavetravel.cmd.commands.Command;
 
-import static com.github.arkadiuss2.cavetravel.cmd.commands.ConsoleInput.getMenuInput;
+import java.util.List;
+import java.util.Optional;
+
+import static com.github.arkadiuss2.cavetravel.CaveFactory.*;
+import static com.github.arkadiuss2.cavetravel.cmd.commands.ConsoleInput.getSplitInput;
 
 public class Start {
 
@@ -12,9 +16,16 @@ public class Start {
 
         welcomeMessage();
         displayOptions();
+        System.out.println();
         do {
-            Command inputCommand = getMenuInput();
-            inputCommand.execute();
+            Optional<Command> first = getMatchedCommand(getCommandList());
+
+            if (first.isPresent()) {
+                first.get().execute();
+            } else {
+                System.out.println("Command not found type 'help' to see all commands");
+            }
+
         } while (!hasGameStarted);
     }
 
@@ -27,5 +38,13 @@ public class Start {
         System.out.println("Write what do you want to do:");
     }
 
+    public static Optional<Command> getMatchedCommand(List<Command> commandList) {
+        String[] splitInput = getSplitInput();
+
+        return commandList
+                .stream()
+                .filter(command -> command.isMatched(splitInput))
+                .findFirst();
+    }
 
 }
