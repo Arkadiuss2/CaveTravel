@@ -1,50 +1,71 @@
 package com.github.arkadiuss2.cavetravel;
 
-import com.github.arkadiuss2.cavetravel.engine.commands.Command;
+import com.github.arkadiuss2.cavetravel.engine.CommandMapOperation;
+import com.github.arkadiuss2.cavetravel.engine.Engine;
+import com.github.arkadiuss2.cavetravel.engine.FightEngine;
+import com.github.arkadiuss2.cavetravel.engine.StoryTeller;
 import com.github.arkadiuss2.cavetravel.engine.cmd.commands.HelpCommand;
 import com.github.arkadiuss2.cavetravel.engine.cmd.commands.NewCommand;
+import com.github.arkadiuss2.cavetravel.engine.commands.Command;
 import com.github.arkadiuss2.cavetravel.engine.map.commands.BotGoCommand;
 import com.github.arkadiuss2.cavetravel.engine.map.commands.LeftGoCommand;
 import com.github.arkadiuss2.cavetravel.engine.map.commands.RightGoCommand;
 import com.github.arkadiuss2.cavetravel.engine.map.commands.TopGoCommand;
-import com.github.arkadiuss2.cavetravel.engine.Engine;
-import com.github.arkadiuss2.cavetravel.engine.StoryTeller;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CaveFactory {
 
+    private final FightEngine fightEngine = new FightEngine();
+    private final StoryTeller storyTeller = new StoryTeller();
+    private List<Command> mapCommands;
+    private List<Command> cmdCommands;
+    private Engine engine;
 
     public List<Command> getCmdCommandList() {
-        List<Command> commands = new ArrayList<>();
-        commands.add(getNewCommand());
+        if (cmdCommands == null) {
+            cmdCommands = new ArrayList<>();
+            cmdCommands.add(getNewCommand());
 
-        //todo WARN:find better solution for this (reference to this.list into list object)
-        commands.add(getHelpCommand(commands));
-        return commands;
+            //todo WARN:find better solution for this (reference to this.list into list object)
+            cmdCommands.add(getHelpCommand(cmdCommands));
+        }
+        return cmdCommands;
     }
 
 
     public List<Command> getMapCommandList() {
-        List<Command> commands = new ArrayList<>();
+        if (mapCommands == null) {
+            mapCommands = new ArrayList<>();
 
-        //todo WARN:find better solution for this (reference to this.list into list object)
-        commands.add(getHelpCommand(commands));
-        commands.add(getTopGoCommand());
-        commands.add(getBotGoCommand());
-        commands.add(getRightGoCommand());
-        commands.add(getLeftGoCommand());
-
-        return commands;
+            //todo WARN:find better solution for this (reference to this.list into list object)
+            mapCommands.add(getHelpCommand(mapCommands));
+            mapCommands.add(getTopGoCommand());
+            mapCommands.add(getBotGoCommand());
+            mapCommands.add(getRightGoCommand());
+            mapCommands.add(getLeftGoCommand());
+        }
+        return mapCommands;
     }
 
     public Engine getEngine() {
-        return new Engine(getMapCommandList(), getStoryTeller());
+        if (engine == null) {
+            engine = new Engine(getCommandMapOperation(), getStoryTeller(), getFightEngine());
+        }
+        return engine;
+    }
+
+    public CommandMapOperation getCommandMapOperation() {
+        return new CommandMapOperation(getMapCommandList());
+    }
+
+    public FightEngine getFightEngine() {
+        return fightEngine;
     }
 
     public StoryTeller getStoryTeller() {
-        return new StoryTeller();
+        return storyTeller;
     }
 
     public Command getHelpCommand(List<Command> commands) {
@@ -56,19 +77,19 @@ public class CaveFactory {
     }
 
     public Command getTopGoCommand() {
-        return new TopGoCommand();
+        return new TopGoCommand(getEngine());
     }
 
     public Command getBotGoCommand() {
-        return new BotGoCommand();
+        return new BotGoCommand(getEngine());
     }
 
     public Command getRightGoCommand() {
-        return new RightGoCommand();
+        return new RightGoCommand(getEngine());
     }
 
     public Command getLeftGoCommand() {
-        return new LeftGoCommand();
+        return new LeftGoCommand(getEngine());
     }
 
 

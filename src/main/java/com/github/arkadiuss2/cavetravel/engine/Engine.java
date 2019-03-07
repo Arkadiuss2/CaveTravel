@@ -1,34 +1,41 @@
 package com.github.arkadiuss2.cavetravel.engine;
 
 
-import com.github.arkadiuss2.cavetravel.domain.character.CharacterI;
-import com.github.arkadiuss2.cavetravel.engine.cmd.CommandWindowOperator;
-import com.github.arkadiuss2.cavetravel.engine.commands.Command;
+import com.github.arkadiuss2.cavetravel.domain.character.PlayerCharacter;
 import com.github.arkadiuss2.cavetravel.engine.exception.WrongEngineStateException;
 import com.github.arkadiuss2.cavetravel.engine.map.Map;
+import com.github.arkadiuss2.cavetravel.engine.map.MapGenerator;
 import com.github.arkadiuss2.cavetravel.engine.map.MapPosition;
 import com.github.arkadiuss2.cavetravel.engine.map.places.Place;
 
-import java.util.List;
-
+import static com.github.arkadiuss2.cavetravel.engine.cmd.ConsoleInput.getRawInput;
 import static com.github.arkadiuss2.cavetravel.engine.map.MapPosition.EMPTY;
 
 public class Engine {
 
     private MapPosition playerPosition = EMPTY;
-    private CharacterI player;
+    private PlayerCharacter player;
     private Map map;
-    private List<Command> mapCommands;
+
+    private FightEngine fightEngine;
 
 
     private StoryTeller storyTeller;
+    private CommandMapOperation commandMapOperation;
 
-    public Engine(List<Command> mapCommands, StoryTeller storyTeller) {
-        this.mapCommands = mapCommands;
+    public Engine(CommandMapOperation commandMapOperation, StoryTeller storyTeller, FightEngine fightEngine) {
+        this.commandMapOperation = commandMapOperation;
         this.storyTeller = storyTeller;
+        this.fightEngine = fightEngine;
     }
 
     public void starNewGame() {
+
+        PlayerCharacter player = CharacterGenerator.generatePlayer(getRawInput());
+        setPlayer(player);
+        setMap(MapGenerator.generateMap(10, 10));
+        setPlayerPosition(MapPosition.position(0, 0));
+
         if (isEngineSet()) {
             System.out.println("Game Started..");
             playLevel();
@@ -37,42 +44,65 @@ public class Engine {
         }
     }
 
+
+    public void playLevel() {
+
+        Place place = map.getPlace(playerPosition);
+
+        storyTeller.tellStory(place);
+
+        FightResult fightResult = fightEngine.fight(player, place.getCharacters());
+
+        System.out.println(fightResult);
+
+        nextMove(fightResult);
+    }
+
+    private void nextMove(FightResult fightResult) {
+        if (FightResult.Summary.WIN == fightResult.getSummary()) {
+            commandMapOperation.executePlayerNextMapMove();
+        } else if (FightResult.Summary.LOSE == fightResult.getSummary()) {
+            System.out.println("Game ends!");
+        }
+    }
+
+
     private boolean isEngineSet() {
         return playerPosition != EMPTY && player != null && map != null;
     }
 
-    public void playLevel() {
-
-        map.placePlayerInto(player, playerPosition);
-
-        Place playerPlace = map.getPlace(playerPosition);
-
-        storyTeller.tellStory(playerPlace);
-
-
-        List<Command> availableMoves = playerPlace.getAvailableMoves();
-
-        System.out.println("Available commands");
-        CommandWindowOperator.printAllCommands(availableMoves);
-
-        do {
-            Command command = CommandWindowOperator.getValidInputCommand(availableMoves);
-            command.execute();
-            //todo change this
-        } while (1 == 1);
-
-    }
 
     public void setPlayerPosition(MapPosition playerPosition) {
         this.playerPosition = playerPosition;
     }
 
-    public void setPlayer(CharacterI player) {
+    public void setPlayer(PlayerCharacter player) {
         this.player = player;
     }
 
     public void setMap(Map map) {
         this.map = map;
+    }
+
+
+    public void goTop() {
+        playerPosition = MapPosition.position(playerPosition.getX(), playerPosition.getY() + 1);
+        playLevel();
+    }
+
+    public void goBot() {
+        playerPosition = MapPosition.position(playerPosition.getX(), playerPosition.getY() - 1);
+        playLevel();
+    }
+
+    public void goLeft() {
+        playerPosition = MapPosition.position(playerPosition.getX() - 1, playerPosition.getY());
+        playLevel();
+    }
+
+    public void goRight() {
+        playerPosition = MapPosition.position(playerPosition.getX() + 1, playerPosition.getY());
+        playLevel();
     }
 
 

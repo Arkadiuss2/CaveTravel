@@ -1,13 +1,10 @@
 package com.github.arkadiuss2.cavetravel;
 
 import com.github.arkadiuss2.cavetravel.engine.cmd.CommandWindowOperator;
-import com.github.arkadiuss2.cavetravel.engine.commands.Command;
-
-import java.util.Optional;
 
 public class Start {
 
-    private static boolean hasGameStarted;
+//    private static boolean hasGameStarted;
 
     public static void main(String[] args) {
 
@@ -22,15 +19,8 @@ public class Start {
         displayOptions();
 
         do {
-            Optional<Command> first = CommandWindowOperator.getPlayerInputCommand(caveFactory.getCmdCommandList());
-
-            if (first.isPresent()) {
-                first.get().execute();
-            } else {
-                System.out.println("Command not found type 'help' to see all commands");
-            }
-
-        } while (!hasGameStarted);
+            CommandWindowOperator.getCommand(caveFactory.getCmdCommandList()).execute();
+        } while (true);
     }
 
     private static void welcomeMessage() {
@@ -41,7 +31,6 @@ public class Start {
         System.out.println("Type: 'help' for commands");
         System.out.println("Write what do you want to do:");
     }
-
 
 
 }

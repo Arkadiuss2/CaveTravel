@@ -15,7 +15,6 @@ public class MapGenerator {
         for (int i = 0; i < width; i++) {
             for (int z = 0; z < height; z++) {
                 Place place = new ScaryPlace();
-                place.addCharacter(new FrogMonster());
                 places[i][z] = place;
             }
         }

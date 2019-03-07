@@ -1,10 +1,15 @@
 package com.github.arkadiuss2.cavetravel.engine.map.commands;
 
+import com.github.arkadiuss2.cavetravel.engine.Engine;
 import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
 
 import java.util.Optional;
 
 public class RightGoCommand extends AbstractGoCommand {
+
+    public RightGoCommand(Engine engine) {
+        super(engine);
+    }
 
     @Override
     public String getCommandName() {
@@ -29,6 +34,7 @@ public class RightGoCommand extends AbstractGoCommand {
     @Override
     public void execute() {
         System.out.println("You went RIGHT");
+        getEngine().goRight();
     }
 
 

@@ -36,12 +36,6 @@ public class Map {
     }
 
 
-    public void placePlayerInto(CharacterI character, MapPosition position) {
-        if (playerPosition != MapPosition.EMPTY) {
-            getPlace(position).removeCharacter(character);
-        }
-        playerPosition = position;
-        getPlace(position).addCharacter(character);
-    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.github.arkadiuss2.cavetravel.engine.cmd;
 
+import com.github.arkadiuss2.cavetravel.engine.cmd.commands.HelpCommand;
 import com.github.arkadiuss2.cavetravel.engine.commands.Command;
 
 import java.util.List;
@@ -12,27 +13,18 @@ public class CommandWindowOperator {
     private CommandWindowOperator() {
     }
 
-    public static Command getValidInputCommand(List<Command> commandList) {
-        Optional<Command> playerInputCommand;
-        boolean isAbsent;
+    public static Command getCommand(List<Command> commandList) {
+        Command command;
         do {
-            playerInputCommand = getPlayerInputCommand(commandList);
-            isAbsent = !playerInputCommand.isPresent();
-            if(isAbsent){
-                System.out.println("Command not found type 'help' to get all available commands");
+            command = getValidCommand(commandList);
+
+            if (command instanceof HelpCommand) {
+                command.execute();
             }
-        } while (isAbsent);
 
-        return playerInputCommand.get();
-    }
+        } while (command instanceof HelpCommand);
 
-    public static Optional<Command> getPlayerInputCommand(List<Command> commandList) {
-        String[] splitInput = getSplitInput();
-
-        return commandList
-                .stream()
-                .filter(command -> command.isMatched(splitInput))
-                .findFirst();
+        return command;
     }
 
     public static void printAllCommands(List<Command> commandList) {
@@ -47,6 +39,32 @@ public class CommandWindowOperator {
         }
         System.out.println();
 
+    }
+
+
+    private static Command getValidCommand(List<Command> commandList) {
+        Optional<Command> playerInputCommand;
+        boolean isAbsent;
+        do {
+            playerInputCommand = getInputCommand(commandList);
+
+            isAbsent = !playerInputCommand.isPresent();
+
+            if (isAbsent) {
+                System.out.println("Command not found type 'help' to get all available commands");
+            }
+        } while (isAbsent);
+
+        return playerInputCommand.get();
+    }
+
+    private static Optional<Command> getInputCommand(List<Command> commandList) {
+        String[] splitInput = getSplitInput();
+
+        return commandList
+                .stream()
+                .filter(command -> command.isMatched(splitInput))
+                .findFirst();
     }
 
 
