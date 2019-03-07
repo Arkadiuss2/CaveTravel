@@ -1,12 +1,9 @@
-package com.github.arkadiuss2.cavetravel.cmd;
+package com.github.arkadiuss2.cavetravel;
 
-import com.github.arkadiuss2.cavetravel.cmd.commands.Command;
+import com.github.arkadiuss2.cavetravel.engine.cmd.CommandWindowOperator;
+import com.github.arkadiuss2.cavetravel.engine.commands.Command;
 
-import java.util.List;
 import java.util.Optional;
-
-import static com.github.arkadiuss2.cavetravel.CaveFactory.*;
-import static com.github.arkadiuss2.cavetravel.cmd.commands.ConsoleInput.getSplitInput;
 
 public class Start {
 
@@ -14,11 +11,18 @@ public class Start {
 
     public static void main(String[] args) {
 
+        CaveFactory caveFactory = new CaveFactory();
+
+        startGame(caveFactory);
+    }
+
+    private static void startGame(CaveFactory caveFactory) {
+
         welcomeMessage();
         displayOptions();
-        System.out.println();
+
         do {
-            Optional<Command> first = getMatchedCommand(getCommandList());
+            Optional<Command> first = CommandWindowOperator.getPlayerInputCommand(caveFactory.getCmdCommandList());
 
             if (first.isPresent()) {
                 first.get().execute();
@@ -38,13 +42,6 @@ public class Start {
         System.out.println("Write what do you want to do:");
     }
 
-    public static Optional<Command> getMatchedCommand(List<Command> commandList) {
-        String[] splitInput = getSplitInput();
 
-        return commandList
-                .stream()
-                .filter(command -> command.isMatched(splitInput))
-                .findFirst();
-    }
 
 }

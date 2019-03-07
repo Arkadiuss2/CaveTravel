@@ -2,76 +2,77 @@ package com.github.arkadiuss2.cavetravel.engine;
 
 
 import com.github.arkadiuss2.cavetravel.domain.character.CharacterI;
-import com.github.arkadiuss2.cavetravel.map.Map;
-import com.github.arkadiuss2.cavetravel.map.MapGenerator;
-import com.github.arkadiuss2.cavetravel.map.MapPosition;
+import com.github.arkadiuss2.cavetravel.engine.cmd.CommandWindowOperator;
+import com.github.arkadiuss2.cavetravel.engine.commands.Command;
+import com.github.arkadiuss2.cavetravel.engine.exception.WrongEngineStateException;
+import com.github.arkadiuss2.cavetravel.engine.map.Map;
+import com.github.arkadiuss2.cavetravel.engine.map.MapPosition;
+import com.github.arkadiuss2.cavetravel.engine.map.places.Place;
 
-import static com.github.arkadiuss2.cavetravel.map.MapPosition.position;
+import java.util.List;
 
+import static com.github.arkadiuss2.cavetravel.engine.map.MapPosition.EMPTY;
 
 public class Engine {
 
-    private MapPosition playerPosition = position(0, 0);
+    private MapPosition playerPosition = EMPTY;
     private CharacterI player;
     private Map map;
+    private List<Command> mapCommands;
 
 
-    public void starNewGame(CharacterI player) {
-        this.player = player;
+    private StoryTeller storyTeller;
 
-        initializeGame();
-        System.out.println("Game Started..");
-//
-//        startingMove();
-//
-//        fightWithMonsters();
-//
-//        doNextMove();
-
+    public Engine(List<Command> mapCommands, StoryTeller storyTeller) {
+        this.mapCommands = mapCommands;
+        this.storyTeller = storyTeller;
     }
 
-    private void startingMove() {
+    public void starNewGame() {
+        if (isEngineSet()) {
+            System.out.println("Game Started..");
+            playLevel();
+        } else {
+            throw new WrongEngineStateException("Engine properties were not properly set!");
+        }
+    }
+
+    private boolean isEngineSet() {
+        return playerPosition != EMPTY && player != null && map != null;
+    }
+
+    public void playLevel() {
 
         map.placePlayerInto(player, playerPosition);
 
-        StoryTeller storyTeller = new StoryTeller(map);
-        storyTeller.tellStory(playerPosition);
+        Place playerPlace = map.getPlace(playerPosition);
+
+        storyTeller.tellStory(playerPlace);
+
+
+        List<Command> availableMoves = playerPlace.getAvailableMoves();
+
+        System.out.println("Available commands");
+        CommandWindowOperator.printAllCommands(availableMoves);
+
+        do {
+            Command command = CommandWindowOperator.getValidInputCommand(availableMoves);
+            command.execute();
+            //todo change this
+        } while (1 == 1);
 
     }
 
-    private void initializeGame() {
-        map = MapGenerator.generateMap(10, 10);
-
+    public void setPlayerPosition(MapPosition playerPosition) {
+        this.playerPosition = playerPosition;
     }
 
-//    private void doNextMove() {
-//        if (hasSurvive()) {
-//            System.out.println("You survive!");
-//            System.out.println("Where do you want to go?!");
-//
-//            moveToNextDestination();
-//
-//        } else {
-//            System.out.println("You die");
-//            System.out.println("Thank you for playing!");
-//        }
-//    }
-
-//    private void moveToNextDestination() {
-//        Optional<Direction> mapInput = ConsoleInput.getMapInput();
-//        if (mapInput.isPresent()) {
-//            map.placePlayerInto(player, playerPosition);
-//        } else {
-//            System.out.println("Unrecognized command!");
-//        }
-//    }
-
-    private boolean hasSurvive() {
-        return player.getHp().getCurrentBar() > 0;
+    public void setPlayer(CharacterI player) {
+        this.player = player;
     }
 
-    private void fightWithMonsters() {
-        System.out.println("You fight with monsters!!");
+    public void setMap(Map map) {
+        this.map = map;
     }
 
 

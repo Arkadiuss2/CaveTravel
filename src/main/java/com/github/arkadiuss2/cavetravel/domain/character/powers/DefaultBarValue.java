@@ -4,19 +4,18 @@ import com.github.arkadiuss2.cavetravel.domain.character.WrongValueCharacterExce
 
 public class DefaultBarValue implements BarValue {
 
-    private double maxBar = 1;
-
-    private double currentBar = 0;
+    private double maxValue = 1;
+    private double currentValue = 0;
 
     public DefaultBarValue() {
     }
 
-    public DefaultBarValue(double maxBar, double currentBar) {
+    public DefaultBarValue(double maxValue, double currentValue) {
 
-        validateValues(maxBar, currentBar);
+        validateValues(maxValue, currentValue);
 
-        this.maxBar = maxBar;
-        this.currentBar = currentBar;
+        this.maxValue = maxValue;
+        this.currentValue = currentValue;
 
     }
 
@@ -26,20 +25,20 @@ public class DefaultBarValue implements BarValue {
         }
     }
 
-    public boolean subtractCurrentBar(double subtractValue) {
-        currentBar -= subtractValue;
-        if (currentBar < 0) {
-            currentBar = 0;
+    public boolean subtractCurrentValue(double subtractValue) {
+        currentValue -= subtractValue;
+        if (currentValue < 0) {
+            currentValue = 0;
             return true;
         } else {
             return false;
         }
     }
 
-    public boolean addCurrentBar(double addValue) {
-        currentBar += addValue;
-        if (currentBar > maxBar) {
-            currentBar = maxBar;
+    public boolean addCurrentValue(double addValue) {
+        currentValue += addValue;
+        if (currentValue > maxValue) {
+            currentValue = maxValue;
             return true;
         } else {
             return false;
@@ -47,20 +46,24 @@ public class DefaultBarValue implements BarValue {
 
     }
 
-    public double getMaxBar() {
-        return maxBar;
+    @Override
+    public double getMaxValue() {
+        return maxValue;
     }
 
-    public void setMaxBar(double maxPower) {
-        this.maxBar = maxPower;
+    @Override
+    public void setMaxValue(double maxValue) {
+        this.maxValue = maxValue;
     }
 
-    public double getCurrentBar() {
-        return currentBar;
+    @Override
+    public double getCurrentValue() {
+        return currentValue;
     }
 
-    public void setCurrentBar(double currentBar) {
-        this.currentBar = currentBar;
+    @Override
+    public void setCurrentValue(double currentValue) {
+        this.currentValue = currentValue;
     }
 
 

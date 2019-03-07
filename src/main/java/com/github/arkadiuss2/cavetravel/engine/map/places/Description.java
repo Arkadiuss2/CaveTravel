@@ -1,4 +1,4 @@
-package com.github.arkadiuss2.cavetravel.map.places;
+package com.github.arkadiuss2.cavetravel.engine.map.places;
 
 public interface Description {
 

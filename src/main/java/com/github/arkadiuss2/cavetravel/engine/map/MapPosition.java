@@ -1,4 +1,4 @@
-package com.github.arkadiuss2.cavetravel.map;
+package com.github.arkadiuss2.cavetravel.engine.map;
 
 public class MapPosition {
 

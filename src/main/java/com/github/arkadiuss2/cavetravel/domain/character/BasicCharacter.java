@@ -2,24 +2,24 @@ package com.github.arkadiuss2.cavetravel.domain.character;
 
 import com.github.arkadiuss2.cavetravel.domain.character.powers.BarValue;
 import com.github.arkadiuss2.cavetravel.domain.character.powers.DefaultBarValue;
+import com.github.arkadiuss2.cavetravel.domain.character.powers.HealthPowerValue;
 import com.github.arkadiuss2.cavetravel.domain.character.skill.Strength;
 
 public abstract class BasicCharacter implements CharacterI {
 
-    private BarValue hp = new DefaultBarValue();
+    private HealthPowerValue hp;
     private BarValue mp = new DefaultBarValue();
     private Strength strength = new Strength();
     private BarValue level = new DefaultBarValue();
     private BarValue experience = new DefaultBarValue();
 
-    public abstract String getName();
 
     public BasicCharacter() {
         prepareDefaultValues();
     }
 
     public void prepareDefaultValues() {
-        setHp(new DefaultBarValue(100, 100));
+        setHp(new HealthPowerValue(100, 100));
         setMp(new DefaultBarValue(100, 100));
 
         Strength strength = new Strength();
@@ -28,12 +28,12 @@ public abstract class BasicCharacter implements CharacterI {
     }
 
     @Override
-    public BarValue getHp() {
+    public HealthPowerValue getHp() {
         return hp;
     }
 
     @Override
-    public void setHp(BarValue hp) {
+    public void setHp(HealthPowerValue hp) {
         this.hp = hp;
     }
 

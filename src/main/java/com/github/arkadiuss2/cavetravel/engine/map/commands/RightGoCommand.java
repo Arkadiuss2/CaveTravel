@@ -1,13 +1,15 @@
-package com.github.arkadiuss2.cavetravel.cmd.commands.moves;
+package com.github.arkadiuss2.cavetravel.engine.map.commands;
 
-import com.github.arkadiuss2.cavetravel.cmd.commands.CommandCategory;
+import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
 
 import java.util.Optional;
 
-import static com.github.arkadiuss2.cavetravel.cmd.commands.moves.Direction.RIGHT;
-import static com.github.arkadiuss2.cavetravel.cmd.commands.moves.Direction.getDirection;
-
 public class RightGoCommand extends AbstractGoCommand {
+
+    @Override
+    public String getCommandName() {
+        return "go right";
+    }
 
     @Override
     public boolean isMatched(String[] splitInput) {
@@ -15,8 +17,8 @@ public class RightGoCommand extends AbstractGoCommand {
     }
 
     private boolean isRight(String value) {
-        Optional<Direction> direction = getDirection(value);
-        return direction.isPresent() && RIGHT == direction.get();
+        Optional<Direction> direction = Direction.getDirection(value);
+        return direction.isPresent() && Direction.RIGHT == direction.get();
     }
 
     @Override

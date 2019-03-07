@@ -5,4 +5,9 @@ public class HealthPowerValue extends DefaultBarValue {
     public HealthPowerValue(double maxPower, double currentPower) {
         super(maxPower, currentPower);
     }
+
+    @Override
+    public String toString() {
+        return "(" + getCurrentValue() + "/" + getMaxValue() + ") HP";
+    }
 }

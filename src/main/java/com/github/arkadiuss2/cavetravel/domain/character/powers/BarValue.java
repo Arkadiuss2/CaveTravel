@@ -7,7 +7,7 @@ public interface BarValue {
      * @param subtract value to current
      * @return true if limit exceeded otherwise false
      */
-    boolean subtractCurrentBar(double subtract);
+    boolean subtractCurrentValue(double subtract);
 
     /**
      * Add value to current
@@ -15,14 +15,14 @@ public interface BarValue {
      * @param add value to current
      * @return true if limit exceeded otherwise false
      */
-    boolean addCurrentBar(double add);
+    boolean addCurrentValue(double add);
 
-    double getMaxBar();
+    double getMaxValue();
 
-    void setMaxBar(double maxBar);
+    void setMaxValue(double maxBar);
 
-    double getCurrentBar();
+    double getCurrentValue();
 
-    void setCurrentBar(double currentBar);
+    void setCurrentValue(double currentBar);
 
 }

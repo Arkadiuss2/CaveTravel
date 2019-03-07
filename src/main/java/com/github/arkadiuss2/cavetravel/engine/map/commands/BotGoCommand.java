@@ -1,12 +1,15 @@
-package com.github.arkadiuss2.cavetravel.cmd.commands.moves;
+package com.github.arkadiuss2.cavetravel.engine.map.commands;
 
-import com.github.arkadiuss2.cavetravel.cmd.commands.CommandCategory;
+import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
 
 import java.util.Optional;
 
-import static com.github.arkadiuss2.cavetravel.cmd.commands.moves.Direction.*;
-
 public class BotGoCommand extends AbstractGoCommand {
+
+    @Override
+    public String getCommandName() {
+        return "go bot";
+    }
 
     @Override
     public boolean isMatched(String[] splitInput) {
@@ -14,8 +17,8 @@ public class BotGoCommand extends AbstractGoCommand {
     }
 
     private boolean isBot(String value) {
-        Optional<Direction> direction = getDirection(value);
-        return direction.isPresent() && BOT == direction.get();
+        Optional<Direction> direction = Direction.getDirection(value);
+        return direction.isPresent() && Direction.BOT == direction.get();
     }
 
     @Override

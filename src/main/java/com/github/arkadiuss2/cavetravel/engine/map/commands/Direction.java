@@ -1,4 +1,4 @@
-package com.github.arkadiuss2.cavetravel.cmd.commands.moves;
+package com.github.arkadiuss2.cavetravel.engine.map.commands;
 
 import java.util.Optional;
 

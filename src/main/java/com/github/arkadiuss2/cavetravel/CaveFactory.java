@@ -1,54 +1,75 @@
 package com.github.arkadiuss2.cavetravel;
 
-import com.github.arkadiuss2.cavetravel.cmd.commands.Command;
-import com.github.arkadiuss2.cavetravel.cmd.commands.HelpCommand;
-import com.github.arkadiuss2.cavetravel.cmd.commands.NewCommand;
-import com.github.arkadiuss2.cavetravel.cmd.commands.moves.BotGoCommand;
-import com.github.arkadiuss2.cavetravel.cmd.commands.moves.LeftGoCommand;
-import com.github.arkadiuss2.cavetravel.cmd.commands.moves.RightGoCommand;
-import com.github.arkadiuss2.cavetravel.cmd.commands.moves.TopGoCommand;
+import com.github.arkadiuss2.cavetravel.engine.commands.Command;
+import com.github.arkadiuss2.cavetravel.engine.cmd.commands.HelpCommand;
+import com.github.arkadiuss2.cavetravel.engine.cmd.commands.NewCommand;
+import com.github.arkadiuss2.cavetravel.engine.map.commands.BotGoCommand;
+import com.github.arkadiuss2.cavetravel.engine.map.commands.LeftGoCommand;
+import com.github.arkadiuss2.cavetravel.engine.map.commands.RightGoCommand;
+import com.github.arkadiuss2.cavetravel.engine.map.commands.TopGoCommand;
+import com.github.arkadiuss2.cavetravel.engine.Engine;
+import com.github.arkadiuss2.cavetravel.engine.StoryTeller;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CaveFactory {
 
-    public static List<Command> getCommandList() {
+
+    public List<Command> getCmdCommandList() {
+        List<Command> commands = new ArrayList<>();
+        commands.add(getNewCommand());
+
+        //todo WARN:find better solution for this (reference to this.list into list object)
+        commands.add(getHelpCommand(commands));
+        return commands;
+    }
+
+
+    public List<Command> getMapCommandList() {
         List<Command> commands = new ArrayList<>();
 
-        commands.add(getHelpCommand());
-        commands.add(getNewCommand());
+        //todo WARN:find better solution for this (reference to this.list into list object)
+        commands.add(getHelpCommand(commands));
         commands.add(getTopGoCommand());
         commands.add(getBotGoCommand());
         commands.add(getRightGoCommand());
         commands.add(getLeftGoCommand());
 
         return commands;
-
     }
 
-    public static Command getHelpCommand() {
-        return new HelpCommand();
+    public Engine getEngine() {
+        return new Engine(getMapCommandList(), getStoryTeller());
     }
 
-    public static Command getNewCommand() {
-        return new NewCommand();
+    public StoryTeller getStoryTeller() {
+        return new StoryTeller();
     }
 
-    public static Command getTopGoCommand() {
+    public Command getHelpCommand(List<Command> commands) {
+        return new HelpCommand(commands);
+    }
+
+    public Command getNewCommand() {
+        return new NewCommand(getEngine());
+    }
+
+    public Command getTopGoCommand() {
         return new TopGoCommand();
     }
 
-    public static Command getBotGoCommand() {
+    public Command getBotGoCommand() {
         return new BotGoCommand();
     }
 
-    public static Command getRightGoCommand() {
+    public Command getRightGoCommand() {
         return new RightGoCommand();
     }
 
-    public static Command getLeftGoCommand() {
+    public Command getLeftGoCommand() {
         return new LeftGoCommand();
     }
+
 
 }

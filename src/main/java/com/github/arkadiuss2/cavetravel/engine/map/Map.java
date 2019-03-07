@@ -1,7 +1,7 @@
-package com.github.arkadiuss2.cavetravel.map;
+package com.github.arkadiuss2.cavetravel.engine.map;
 
 import com.github.arkadiuss2.cavetravel.domain.character.CharacterI;
-import com.github.arkadiuss2.cavetravel.map.places.Place;
+import com.github.arkadiuss2.cavetravel.engine.map.places.Place;
 
 public class Map {
 

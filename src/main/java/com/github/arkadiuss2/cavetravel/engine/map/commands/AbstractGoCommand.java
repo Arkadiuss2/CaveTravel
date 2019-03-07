@@ -1,9 +1,7 @@
-package com.github.arkadiuss2.cavetravel.cmd.commands.moves;
+package com.github.arkadiuss2.cavetravel.engine.map.commands;
 
-import com.github.arkadiuss2.cavetravel.cmd.commands.Command;
-import com.github.arkadiuss2.cavetravel.cmd.commands.CommandCategory;
-
-import static com.github.arkadiuss2.cavetravel.cmd.commands.moves.Direction.getDirection;
+import com.github.arkadiuss2.cavetravel.engine.commands.Command;
+import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
 
 public abstract class AbstractGoCommand implements Command {
 
@@ -11,7 +9,7 @@ public abstract class AbstractGoCommand implements Command {
     protected boolean isGoCommand(String[] splitInput) {
         return "go".equals(splitInput[0]) &&
                 splitInput.length == 2 &&
-                getDirection(splitInput[1]).isPresent();
+                Direction.getDirection(splitInput[1]).isPresent();
     }
 
     @Override
