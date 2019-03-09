@@ -13,8 +13,8 @@ public class CommandWindowOperator {
     private CommandWindowOperator() {
     }
 
-    public static Command getCommand(List<Command> commandList) {
-        Command command;
+    public static <T> Command<T> getCommand(List<Command<T>> commandList) {
+        Command<T> command;
         do {
             command = getValidCommand(commandList);
 
@@ -42,8 +42,8 @@ public class CommandWindowOperator {
     }
 
 
-    private static Command getValidCommand(List<Command> commandList) {
-        Optional<Command> playerInputCommand;
+    private static <T> Command<T> getValidCommand(List<Command<T>> commandList) {
+        Optional<Command<T>> playerInputCommand;
         boolean isAbsent;
         do {
             playerInputCommand = getInputCommand(commandList);
@@ -58,7 +58,7 @@ public class CommandWindowOperator {
         return playerInputCommand.get();
     }
 
-    private static Optional<Command> getInputCommand(List<Command> commandList) {
+    private static <T> Optional<Command<T>> getInputCommand(List<Command<T>> commandList) {
         String[] splitInput = getSplitInput();
 
         return commandList

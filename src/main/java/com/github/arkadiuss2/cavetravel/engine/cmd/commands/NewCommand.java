@@ -4,7 +4,7 @@ import com.github.arkadiuss2.cavetravel.engine.Engine;
 import com.github.arkadiuss2.cavetravel.engine.commands.Command;
 import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
 
-public class NewCommand implements Command {
+public class NewCommand<Void> implements Command<Void> {
 
     private Engine engine;
 
@@ -28,11 +28,12 @@ public class NewCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public Void execute() {
         System.out.println("Starting new game..");
         System.out.println("What is your name Wanderer?");
 
         engine.starNewGame();
+        return null;
     }
 
 

@@ -2,6 +2,8 @@ package com.github.arkadiuss2.cavetravel.domain.character.powers;
 
 import com.github.arkadiuss2.cavetravel.domain.character.WrongValueCharacterException;
 
+import java.util.Objects;
+
 public class DefaultBarValue implements BarValue {
 
     private double maxValue = 1;
@@ -66,5 +68,18 @@ public class DefaultBarValue implements BarValue {
         this.currentValue = currentValue;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DefaultBarValue that = (DefaultBarValue) o;
+        return Double.compare(that.maxValue, maxValue) == 0 &&
+                Double.compare(that.currentValue, currentValue) == 0;
+    }
 
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(maxValue, currentValue);
+    }
 }

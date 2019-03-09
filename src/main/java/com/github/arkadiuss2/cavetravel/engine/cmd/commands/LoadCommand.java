@@ -3,7 +3,13 @@ package com.github.arkadiuss2.cavetravel.engine.cmd.commands;
 import com.github.arkadiuss2.cavetravel.engine.commands.Command;
 import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
 
-public class LoadCommand implements Command {
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+
+public class LoadCommand<Void> implements Command<Void> {
+
+
     @Override
     public String getCommandName() {
         return "load";
@@ -11,7 +17,7 @@ public class LoadCommand implements Command {
 
     @Override
     public boolean isMatched(String[] splitInput) {
-        return false;
+        return splitInput.length == 2 && "load".equals(splitInput[0]);
     }
 
     @Override
@@ -20,7 +26,9 @@ public class LoadCommand implements Command {
     }
 
     @Override
-    public void execute() {
-
+    public Void execute() {
+        return null;
     }
+
+
 }

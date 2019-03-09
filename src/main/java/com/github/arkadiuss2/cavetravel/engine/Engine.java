@@ -3,9 +3,10 @@ package com.github.arkadiuss2.cavetravel.engine;
 
 import com.github.arkadiuss2.cavetravel.domain.character.PlayerCharacter;
 import com.github.arkadiuss2.cavetravel.engine.exception.WrongEngineStateException;
-import com.github.arkadiuss2.cavetravel.engine.map.Map;
+import com.github.arkadiuss2.cavetravel.engine.map.GameMap;
 import com.github.arkadiuss2.cavetravel.engine.map.MapGenerator;
 import com.github.arkadiuss2.cavetravel.engine.map.MapPosition;
+import com.github.arkadiuss2.cavetravel.engine.map.commands.Direction;
 import com.github.arkadiuss2.cavetravel.engine.map.places.Place;
 
 import static com.github.arkadiuss2.cavetravel.engine.cmd.ConsoleInput.getRawInput;
@@ -15,7 +16,7 @@ public class Engine {
 
     private MapPosition playerPosition = EMPTY;
     private PlayerCharacter player;
-    private Map map;
+    private GameMap gameMap;
 
     private FightEngine fightEngine;
 
@@ -33,8 +34,8 @@ public class Engine {
 
         PlayerCharacter player = CharacterGenerator.generatePlayer(getRawInput());
         setPlayer(player);
-        setMap(MapGenerator.generateMap(10, 10));
-        setPlayerPosition(MapPosition.position(0, 0));
+        setGameMap(MapGenerator.generateMap(10, 10));
+        setPlayerPosition(new MapPosition(0, 0));
 
         if (isEngineSet()) {
             System.out.println("Game Started..");
@@ -47,9 +48,9 @@ public class Engine {
 
     public void playLevel() {
 
-        Place place = map.getPlace(playerPosition);
+        Place place = gameMap.getPlace(playerPosition);
 
-        storyTeller.tellStory(place);
+        storyTeller.tellStory(place, playerPosition);
 
         FightResult fightResult = fightEngine.fight(player, place.getCharacters());
 
@@ -60,15 +61,36 @@ public class Engine {
 
     private void nextMove(FightResult fightResult) {
         if (FightResult.Summary.WIN == fightResult.getSummary()) {
-            commandMapOperation.executePlayerNextMapMove();
+            Direction direction = commandMapOperation.executePlayerNextMapMove();
+            goTo(direction);
         } else if (FightResult.Summary.LOSE == fightResult.getSummary()) {
             System.out.println("Game ends!");
         }
     }
 
+    private void goTo(Direction direction) {
+        switch (direction) {
+            case TOP: {
+                goTop();
+                break;
+            }
+            case LEFT: {
+                goLeft();
+                break;
+            }
+            case RIGHT: {
+                goRight();
+                break;
+            }
+            case BOT: {
+                goBot();
+            }
+        }
+    }
+
 
     private boolean isEngineSet() {
-        return playerPosition != EMPTY && player != null && map != null;
+        return playerPosition != EMPTY && player != null && gameMap != null;
     }
 
 
@@ -80,28 +102,28 @@ public class Engine {
         this.player = player;
     }
 
-    public void setMap(Map map) {
-        this.map = map;
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
     }
 
 
     public void goTop() {
-        playerPosition = MapPosition.position(playerPosition.getX(), playerPosition.getY() + 1);
+        playerPosition.setY(playerPosition.getY() + 1);
         playLevel();
     }
 
     public void goBot() {
-        playerPosition = MapPosition.position(playerPosition.getX(), playerPosition.getY() - 1);
+        playerPosition.setY(playerPosition.getY() - 1);
         playLevel();
     }
 
     public void goLeft() {
-        playerPosition = MapPosition.position(playerPosition.getX() - 1, playerPosition.getY());
+        playerPosition.setX(playerPosition.getX() - 1);
         playLevel();
     }
 
     public void goRight() {
-        playerPosition = MapPosition.position(playerPosition.getX() + 1, playerPosition.getY());
+        playerPosition.setX(playerPosition.getX() + 1);
         playLevel();
     }
 

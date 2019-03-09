@@ -1,16 +1,20 @@
 package com.github.arkadiuss2.cavetravel.engine.map;
 
-import com.github.arkadiuss2.cavetravel.domain.character.CharacterI;
 import com.github.arkadiuss2.cavetravel.engine.map.places.Place;
 
-public class Map {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Arrays;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class    GameMap {
 
     public static final int MAX_WIDTH = 100;
     public static final int MAX_HEIGHT = 100;
 
     private Place[][] places;
-    private MapPosition playerPosition = MapPosition.EMPTY;
-
 
     public Place[][] getPlaces() {
         return places;
@@ -30,12 +34,29 @@ public class Map {
         this.places = places;
     }
 
-
     public Place getPlace(MapPosition position) {
+        checkLimits(position.getX(), position.getY());
         return places[position.getX()][position.getY()];
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameMap gameMap = (GameMap) o;
+        return Arrays.deepEquals(places, gameMap.places);
+    }
 
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(places);
+    }
 
+    @Override
+    public String toString() {
+        return "GameMap{" +
+                "places=" + Arrays.toString(places) +
+                '}';
+    }
 }

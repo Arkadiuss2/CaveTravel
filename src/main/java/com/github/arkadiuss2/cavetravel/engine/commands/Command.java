@@ -1,6 +1,6 @@
 package com.github.arkadiuss2.cavetravel.engine.commands;
 
-public interface Command {
+public interface Command<T> {
 
     String getCommandName();
 
@@ -8,5 +8,5 @@ public interface Command {
 
     CommandCategory getCategory();
 
-    void execute();
+    T execute();
 }

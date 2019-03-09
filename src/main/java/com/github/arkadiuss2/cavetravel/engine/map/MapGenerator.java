@@ -7,7 +7,7 @@ import com.github.arkadiuss2.cavetravel.engine.map.places.Place;
 public class MapGenerator {
 
 
-    public static Map generateMap(int width, int height) {
+    public static GameMap generateMap(int width, int height) {
 
 
         Place[][] places = new Place[width][height];
@@ -15,13 +15,16 @@ public class MapGenerator {
         for (int i = 0; i < width; i++) {
             for (int z = 0; z < height; z++) {
                 Place place = new ScaryPlace();
+                place.addCharacter(new FrogMonster());
+                place.addCharacter(new FrogMonster());
+
                 places[i][z] = place;
             }
         }
 
-        Map map = new Map();
-        map.setPlaces(places);
-        return map;
+        GameMap gameMap = new GameMap();
+        gameMap.setPlaces(places);
+        return gameMap;
 
     }
 }

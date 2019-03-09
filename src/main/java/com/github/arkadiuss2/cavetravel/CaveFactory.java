@@ -7,10 +7,7 @@ import com.github.arkadiuss2.cavetravel.engine.StoryTeller;
 import com.github.arkadiuss2.cavetravel.engine.cmd.commands.HelpCommand;
 import com.github.arkadiuss2.cavetravel.engine.cmd.commands.NewCommand;
 import com.github.arkadiuss2.cavetravel.engine.commands.Command;
-import com.github.arkadiuss2.cavetravel.engine.map.commands.BotGoCommand;
-import com.github.arkadiuss2.cavetravel.engine.map.commands.LeftGoCommand;
-import com.github.arkadiuss2.cavetravel.engine.map.commands.RightGoCommand;
-import com.github.arkadiuss2.cavetravel.engine.map.commands.TopGoCommand;
+import com.github.arkadiuss2.cavetravel.engine.map.commands.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +16,11 @@ public class CaveFactory {
 
     private final FightEngine fightEngine = new FightEngine();
     private final StoryTeller storyTeller = new StoryTeller();
-    private List<Command> mapCommands;
-    private List<Command> cmdCommands;
+    private List<Command<Direction>> mapCommands;
+    private List<Command<Void>> cmdCommands;
     private Engine engine;
 
-    public List<Command> getCmdCommandList() {
+    public List<Command<Void>> getCmdCommandList() {
         if (cmdCommands == null) {
             cmdCommands = new ArrayList<>();
             cmdCommands.add(getNewCommand());
@@ -35,7 +32,7 @@ public class CaveFactory {
     }
 
 
-    public List<Command> getMapCommandList() {
+    public List<Command<Direction>> getMapCommandList() {
         if (mapCommands == null) {
             mapCommands = new ArrayList<>();
 
@@ -68,28 +65,28 @@ public class CaveFactory {
         return storyTeller;
     }
 
-    public Command getHelpCommand(List<Command> commands) {
+    public <T> Command<T> getHelpCommand(List<Command<T>> commands) {
         return new HelpCommand(commands);
     }
 
-    public Command getNewCommand() {
+    public Command<Void> getNewCommand() {
         return new NewCommand(getEngine());
     }
 
-    public Command getTopGoCommand() {
-        return new TopGoCommand(getEngine());
+    public Command<Direction> getTopGoCommand() {
+        return new TopGoCommand();
     }
 
-    public Command getBotGoCommand() {
-        return new BotGoCommand(getEngine());
+    public Command<Direction> getBotGoCommand() {
+        return new BotGoCommand();
     }
 
-    public Command getRightGoCommand() {
-        return new RightGoCommand(getEngine());
+    public Command<Direction> getRightGoCommand() {
+        return new RightGoCommand();
     }
 
-    public Command getLeftGoCommand() {
-        return new LeftGoCommand(getEngine());
+    public Command<Direction> getLeftGoCommand() {
+        return new LeftGoCommand();
     }
 
 

@@ -5,12 +5,28 @@ import com.github.arkadiuss2.cavetravel.domain.character.powers.DefaultBarValue;
 import com.github.arkadiuss2.cavetravel.domain.character.powers.HealthPowerValue;
 import com.github.arkadiuss2.cavetravel.domain.character.skill.Strength;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
+
+
+@XmlRootElement()
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class BasicCharacter implements CharacterI {
 
     private HealthPowerValue hp;
+
+    @XmlElement(type = DefaultBarValue.class)
     private BarValue mp = new DefaultBarValue();
+
     private Strength strength = new Strength();
+
+    @XmlElement(type = DefaultBarValue.class)
     private BarValue level = new DefaultBarValue();
+
+    @XmlElement(type = DefaultBarValue.class)
     private BarValue experience = new DefaultBarValue();
 
 
@@ -75,5 +91,23 @@ public abstract class BasicCharacter implements CharacterI {
     @Override
     public void setExperience(BarValue experience) {
         this.experience = experience;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BasicCharacter that = (BasicCharacter) o;
+        return Objects.equals(hp, that.hp) &&
+                Objects.equals(mp, that.mp) &&
+                Objects.equals(strength, that.strength) &&
+                Objects.equals(level, that.level) &&
+                Objects.equals(experience, that.experience);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(hp, mp, strength, level, experience);
     }
 }

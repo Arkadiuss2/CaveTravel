@@ -1,23 +1,18 @@
 package com.github.arkadiuss2.cavetravel.engine.map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class MapPosition {
 
     public static final MapPosition EMPTY = new MapPosition(-1, -1);
     private int x;
     private int y;
 
-    private static MapPosition[][] mapArray = new MapPosition[Map.MAX_WIDTH][Map.MAX_HEIGHT];
-
-    public static MapPosition position(int x, int y) {
-        MapPosition mapPosition = mapArray[x][y];
-
-        if (mapPosition == null) {
-            mapArray[x][y] = new MapPosition(x, y);
-        }
-        return mapArray[x][y];
+    public MapPosition() {
     }
 
-    private MapPosition(int x, int y) {
+    public MapPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -31,6 +26,13 @@ public class MapPosition {
         return y;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
 
     @Override
     public String toString() {

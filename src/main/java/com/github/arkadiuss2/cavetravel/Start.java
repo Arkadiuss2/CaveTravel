@@ -4,8 +4,6 @@ import com.github.arkadiuss2.cavetravel.engine.cmd.CommandWindowOperator;
 
 public class Start {
 
-//    private static boolean hasGameStarted;
-
     public static void main(String[] args) {
 
         CaveFactory caveFactory = new CaveFactory();
@@ -31,6 +29,7 @@ public class Start {
         System.out.println("Type: 'help' for commands");
         System.out.println("Write what do you want to do:");
     }
+
 
 
 }

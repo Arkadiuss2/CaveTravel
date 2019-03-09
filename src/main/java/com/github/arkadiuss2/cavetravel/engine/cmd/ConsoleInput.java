@@ -6,11 +6,11 @@ public class ConsoleInput {
 
     public static String getRawInput() {
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine().trim().toLowerCase();
+        return scanner.nextLine();
     }
 
     public static String[] getSplitInput() {
-        String rawInput = getRawInput();
+        String rawInput = getRawInput().trim().toLowerCase();
         return rawInput.split(" ");
     }
 

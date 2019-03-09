@@ -1,15 +1,11 @@
 package com.github.arkadiuss2.cavetravel.engine.map.commands;
 
-import com.github.arkadiuss2.cavetravel.engine.Engine;
 import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
 
 import java.util.Optional;
 
-public class TopGoCommand extends AbstractGoCommand {
+public class TopGoCommand extends AbstractGoCommand<Direction> {
 
-    public TopGoCommand(Engine engine) {
-        super(engine);
-    }
 
     @Override
     public String getCommandName() {
@@ -32,9 +28,9 @@ public class TopGoCommand extends AbstractGoCommand {
     }
 
     @Override
-    public void execute() {
+    public Direction execute() {
         System.out.println("You went TOP");
-        getEngine().goTop();
+        return Direction.TOP;
     }
 
 

@@ -4,7 +4,6 @@ import com.github.arkadiuss2.cavetravel.domain.character.BasicCharacter;
 
 public class FrogMonster extends BasicCharacter {
 
-
     @Override
     public String getName() {
         return "Frog Monster";
@@ -14,4 +13,5 @@ public class FrogMonster extends BasicCharacter {
     public String toString() {
         return getName();
     }
+
 }

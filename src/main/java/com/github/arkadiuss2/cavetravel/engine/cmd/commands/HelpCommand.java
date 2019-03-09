@@ -6,7 +6,7 @@ import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
 
 import java.util.List;
 
-public class HelpCommand implements Command {
+public class HelpCommand<Void> implements Command<Void> {
 
     private List<Command> commandList;
 
@@ -30,8 +30,9 @@ public class HelpCommand implements Command {
         return null;
     }
 
-    public void execute() {
+    public Void execute() {
         CommandWindowOperator.printAllCommands(commandList);
+        return null;
     }
 
 

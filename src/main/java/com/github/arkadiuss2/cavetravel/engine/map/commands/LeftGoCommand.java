@@ -5,11 +5,9 @@ import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
 
 import java.util.Optional;
 
-public class LeftGoCommand extends AbstractGoCommand {
+public class LeftGoCommand extends AbstractGoCommand <Direction>{
 
-    public LeftGoCommand(Engine engine) {
-        super(engine);
-    }
+
 
     @Override
     public String getCommandName() {
@@ -32,9 +30,9 @@ public class LeftGoCommand extends AbstractGoCommand {
     }
 
     @Override
-    public void execute() {
+    public Direction execute() {
         System.out.println("You went LEFT");
-        getEngine().goLeft();
+        return Direction.LEFT;
     }
 
 
