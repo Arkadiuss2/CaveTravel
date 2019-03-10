@@ -3,130 +3,109 @@ package com.github.arkadiuss2.cavetravel.engine;
 
 import com.github.arkadiuss2.cavetravel.domain.character.PlayerCharacter;
 import com.github.arkadiuss2.cavetravel.engine.exception.WrongEngineStateException;
-import com.github.arkadiuss2.cavetravel.engine.map.GameMap;
 import com.github.arkadiuss2.cavetravel.engine.map.MapGenerator;
 import com.github.arkadiuss2.cavetravel.engine.map.MapPosition;
-import com.github.arkadiuss2.cavetravel.engine.map.commands.Direction;
 import com.github.arkadiuss2.cavetravel.engine.map.places.Place;
+import com.github.arkadiuss2.cavetravel.engine.persistance.GameData;
 
 import static com.github.arkadiuss2.cavetravel.engine.cmd.ConsoleInput.getRawInput;
 import static com.github.arkadiuss2.cavetravel.engine.map.MapPosition.EMPTY;
 
 public class Engine {
 
-    private MapPosition playerPosition = EMPTY;
-    private PlayerCharacter player;
-    private GameMap gameMap;
+    public static final WrongEngineStateException WRONG_ENGINE_STATE_EXCEPTION = new WrongEngineStateException("GameData properties were not properly set!");
+
+
+    private GameData gameData;
 
     private FightEngine fightEngine;
 
-
     private StoryTeller storyTeller;
-    private CommandMapOperation commandMapOperation;
 
-    public Engine(CommandMapOperation commandMapOperation, StoryTeller storyTeller, FightEngine fightEngine) {
-        this.commandMapOperation = commandMapOperation;
+    public Engine(StoryTeller storyTeller, FightEngine fightEngine) {
         this.storyTeller = storyTeller;
         this.fightEngine = fightEngine;
     }
 
-    public void starNewGame() {
+    public GameData starNewGame() {
 
-        PlayerCharacter player = CharacterGenerator.generatePlayer(getRawInput());
-        setPlayer(player);
-        setGameMap(MapGenerator.generateMap(10, 10));
-        setPlayerPosition(new MapPosition(0, 0));
+        initialization();
 
-        if (isEngineSet()) {
+        if (isGameDataSet()) {
             System.out.println("Game Started..");
             playLevel();
         } else {
-            throw new WrongEngineStateException("Engine properties were not properly set!");
+            throw WRONG_ENGINE_STATE_EXCEPTION;
+        }
+        return gameData;
+    }
+
+    public void loadGame(GameData gameData) {
+        this.gameData = gameData;
+        if (!isGameDataSet()) {
+            throw WRONG_ENGINE_STATE_EXCEPTION;
         }
     }
 
+    private void initialization() {
 
-    public void playLevel() {
+        gameData = new GameData();
+        gameData.setPlayer(CharacterGenerator.generatePlayer(getRawInput()));
+        gameData.setGameMap(MapGenerator.generateMap(10, 10));
+        gameData.setPlayerPosition(new MapPosition(0, 0));
 
-        Place place = gameMap.getPlace(playerPosition);
+    }
 
-        storyTeller.tellStory(place, playerPosition);
+    public GameData playLevel() {
 
-        FightResult fightResult = fightEngine.fight(player, place.getCharacters());
+        Place place = gameData.getGameMap().getPlace(gameData.getPlayerPosition());
+
+        storyTeller.tellStory(place, gameData.getPlayerPosition());
+
+        FightResult fightResult = fightEngine.fight(gameData.getPlayer(), place.getCharacters());
+
+        collectFightStuff(gameData.getPlayer(), fightResult);
+
+        place.setFightResult(fightResult);
 
         System.out.println(fightResult);
 
-        nextMove(fightResult);
+        return gameData;
     }
 
-    private void nextMove(FightResult fightResult) {
-        if (FightResult.Summary.WIN == fightResult.getSummary()) {
-            Direction direction = commandMapOperation.executePlayerNextMapMove();
-            goTo(direction);
-        } else if (FightResult.Summary.LOSE == fightResult.getSummary()) {
-            System.out.println("Game ends!");
-        }
+    private void collectFightStuff(PlayerCharacter player, FightResult fightResult) {
+        //todo implement all collecting stuff, implement lvl up player.
+        player.getExperience().addCurrentValue(fightResult.getExp());
     }
 
-    private void goTo(Direction direction) {
-        switch (direction) {
-            case TOP: {
-                goTop();
-                break;
-            }
-            case LEFT: {
-                goLeft();
-                break;
-            }
-            case RIGHT: {
-                goRight();
-                break;
-            }
-            case BOT: {
-                goBot();
-            }
-        }
+    private boolean isGameDataSet() {
+        return gameData.getPlayerPosition() != EMPTY && gameData.getPlayer() != null && gameData.getGameMap() != null;
     }
 
 
-    private boolean isEngineSet() {
-        return playerPosition != EMPTY && player != null && gameMap != null;
+    public GameData goTop() {
+        gameData.getPlayerPosition().setY(gameData.getPlayerPosition().getY() + 1);
+        return playLevel();
     }
 
-
-    public void setPlayerPosition(MapPosition playerPosition) {
-        this.playerPosition = playerPosition;
+    public GameData goBot() {
+        gameData.getPlayerPosition().setY(gameData.getPlayerPosition().getY() - 1);
+        return playLevel();
     }
 
-    public void setPlayer(PlayerCharacter player) {
-        this.player = player;
+    public GameData goLeft() {
+        gameData.getPlayerPosition().setX(gameData.getPlayerPosition().getX() - 1);
+        return playLevel();
     }
 
-    public void setGameMap(GameMap gameMap) {
-        this.gameMap = gameMap;
+    public GameData goRight() {
+        gameData.getPlayerPosition().setX(gameData.getPlayerPosition().getX() + 1);
+        return playLevel();
     }
 
-
-    public void goTop() {
-        playerPosition.setY(playerPosition.getY() + 1);
-        playLevel();
+    public GameData getGameData() {
+        return gameData;
     }
-
-    public void goBot() {
-        playerPosition.setY(playerPosition.getY() - 1);
-        playLevel();
-    }
-
-    public void goLeft() {
-        playerPosition.setX(playerPosition.getX() - 1);
-        playLevel();
-    }
-
-    public void goRight() {
-        playerPosition.setX(playerPosition.getX() + 1);
-        playLevel();
-    }
-
 
 }
 

@@ -1,17 +1,18 @@
 package com.github.arkadiuss2.cavetravel.engine.cmd.commands;
 
 import com.github.arkadiuss2.cavetravel.engine.cmd.CommandWindowOperator;
-import com.github.arkadiuss2.cavetravel.engine.commands.Command;
-import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
+import com.github.arkadiuss2.cavetravel.engine.commands.AbstractCommand;
+import com.github.arkadiuss2.cavetravel.engine.persistance.GameData;
 
 import java.util.List;
 
-public class HelpCommand<Void> implements Command<Void> {
+public class HelpCommand extends AbstractCommand {
 
-    private List<Command> commandList;
+    private List<String> commandsNames;
 
-    public HelpCommand(List<Command> commandList) {
-        this.commandList = commandList;
+    public HelpCommand(List<String> commandsNames) {
+        this.commandsNames = commandsNames;
+        commandsNames.add(getCommandName());
     }
 
     @Override
@@ -20,19 +21,13 @@ public class HelpCommand<Void> implements Command<Void> {
     }
 
     @Override
-    public boolean isMatched(String[] splitInput) {
-        return (splitInput.length == 1 && "help".equals(splitInput[0]));
-
+    public boolean isMatched() {
+        return getSplitInput().length == 1 && "help".equals(getSplitInput()[0]);
     }
 
-    @Override
-    public CommandCategory getCategory() {
-        return null;
-    }
-
-    public Void execute() {
-        CommandWindowOperator.printAllCommands(commandList);
-        return null;
+    public GameData execute() {
+        CommandWindowOperator.printAllCommands(commandsNames);
+        return new GameData();
     }
 
 

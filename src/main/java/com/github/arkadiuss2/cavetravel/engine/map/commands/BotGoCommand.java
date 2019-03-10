@@ -1,11 +1,16 @@
 package com.github.arkadiuss2.cavetravel.engine.map.commands;
 
-import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
+import com.github.arkadiuss2.cavetravel.engine.Engine;
+import com.github.arkadiuss2.cavetravel.engine.persistance.GameData;
 
 import java.util.Optional;
 
-public class BotGoCommand extends AbstractGoCommand<Direction> {
+public class BotGoCommand extends AbstractGoCommand {
 
+
+    public BotGoCommand(Engine engine) {
+        super(engine);
+    }
 
     @Override
     public String getCommandName() {
@@ -13,9 +18,10 @@ public class BotGoCommand extends AbstractGoCommand<Direction> {
     }
 
     @Override
-    public boolean isMatched(String[] splitInput) {
-        return isGoCommand(splitInput) && isBot(splitInput[1]);
+    public boolean isMatched() {
+        return isGoCommand(getSplitInput()) && isBot(getSplitInput()[1]);
     }
+
 
     private boolean isBot(String value) {
         Optional<Direction> direction = Direction.getDirection(value);
@@ -23,14 +29,10 @@ public class BotGoCommand extends AbstractGoCommand<Direction> {
     }
 
     @Override
-    public CommandCategory getCategory() {
-        return null;
-    }
-
-    @Override
-    public Direction execute() {
+    public GameData execute() {
         System.out.println("You went BOT");
-        return Direction.BOT;
+        return getEngine().goBot();
+
     }
 
 

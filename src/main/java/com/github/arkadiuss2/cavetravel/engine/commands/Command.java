@@ -1,12 +1,15 @@
 package com.github.arkadiuss2.cavetravel.engine.commands;
 
-public interface Command<T> {
+import com.github.arkadiuss2.cavetravel.engine.persistance.GameData;
+
+public interface Command {
 
     String getCommandName();
 
-    boolean isMatched(String[] splitInput);
+    void setInputCommand(String[] splitInput);
 
-    CommandCategory getCategory();
+    boolean isMatched();
 
-    T execute();
+    GameData execute();
+
 }

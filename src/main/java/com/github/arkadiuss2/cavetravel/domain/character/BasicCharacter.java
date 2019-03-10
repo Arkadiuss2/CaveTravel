@@ -24,10 +24,10 @@ public abstract class BasicCharacter implements CharacterI {
     private Strength strength = new Strength();
 
     @XmlElement(type = DefaultBarValue.class)
-    private BarValue level = new DefaultBarValue();
+    private BarValue level = new DefaultBarValue(100,1);
 
     @XmlElement(type = DefaultBarValue.class)
-    private BarValue experience = new DefaultBarValue();
+    private BarValue experience = new DefaultBarValue(1000,0);
 
 
     public BasicCharacter() {
@@ -109,5 +109,16 @@ public abstract class BasicCharacter implements CharacterI {
     public int hashCode() {
 
         return Objects.hash(hp, mp, strength, level, experience);
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "hp=" + hp +
+                ", mp=" + mp +
+                ", strength=" + strength +
+                ", level=" + level +
+                ", experience=" + experience +
+                '}';
     }
 }

@@ -1,11 +1,15 @@
 package com.github.arkadiuss2.cavetravel.engine.map.commands;
 
-import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
+import com.github.arkadiuss2.cavetravel.engine.Engine;
+import com.github.arkadiuss2.cavetravel.engine.persistance.GameData;
 
 import java.util.Optional;
 
-public class TopGoCommand extends AbstractGoCommand<Direction> {
+public class TopGoCommand extends AbstractGoCommand {
 
+    public TopGoCommand(Engine engine) {
+        super(engine);
+    }
 
     @Override
     public String getCommandName() {
@@ -13,8 +17,8 @@ public class TopGoCommand extends AbstractGoCommand<Direction> {
     }
 
     @Override
-    public boolean isMatched(String[] splitInput) {
-        return isGoCommand(splitInput) && isTop(splitInput[1]);
+    public boolean isMatched() {
+        return isGoCommand(getSplitInput()) && isTop(getSplitInput()[1]);
     }
 
     private boolean isTop(String value) {
@@ -23,14 +27,9 @@ public class TopGoCommand extends AbstractGoCommand<Direction> {
     }
 
     @Override
-    public CommandCategory getCategory() {
-        return null;
-    }
-
-    @Override
-    public Direction execute() {
+    public GameData execute() {
         System.out.println("You went TOP");
-        return Direction.TOP;
+        return getEngine().goTop();
     }
 
 

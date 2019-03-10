@@ -82,4 +82,12 @@ public class DefaultBarValue implements BarValue {
 
         return Objects.hash(maxValue, currentValue);
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "maxValue=" + maxValue +
+                ", currentValue=" + currentValue +
+                '}';
+    }
 }

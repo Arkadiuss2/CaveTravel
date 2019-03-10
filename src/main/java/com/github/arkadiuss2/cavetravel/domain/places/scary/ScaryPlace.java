@@ -15,4 +15,5 @@ public class ScaryPlace extends Place {
         return "Scary Place.";
     }
 
+
 }

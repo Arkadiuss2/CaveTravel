@@ -1,6 +1,7 @@
 package com.github.arkadiuss2.cavetravel;
 
 import com.github.arkadiuss2.cavetravel.engine.cmd.CommandWindowOperator;
+import com.github.arkadiuss2.cavetravel.engine.persistance.GameData;
 
 public class Start {
 
@@ -13,12 +14,21 @@ public class Start {
 
     private static void startGame(CaveFactory caveFactory) {
 
+        GameState actualGameState = caveFactory.getMenuGameState();
+
         welcomeMessage();
         displayOptions();
 
+        GameData gameData;
         do {
-            CommandWindowOperator.getCommand(caveFactory.getCmdCommandList()).execute();
-        } while (true);
+            gameData = CommandWindowOperator.getCommand(actualGameState.getCommands()).execute();
+            if (gameData.isGameActive()) {
+                actualGameState = caveFactory.getActiveGameState();
+            } else {
+                actualGameState = caveFactory.getMenuGameState();
+            }
+
+        } while (!gameData.isGameEnded());
     }
 
     private static void welcomeMessage() {
@@ -29,7 +39,6 @@ public class Start {
         System.out.println("Type: 'help' for commands");
         System.out.println("Write what do you want to do:");
     }
-
 
 
 }

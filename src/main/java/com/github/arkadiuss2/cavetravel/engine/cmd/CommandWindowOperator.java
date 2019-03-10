@@ -13,8 +13,8 @@ public class CommandWindowOperator {
     private CommandWindowOperator() {
     }
 
-    public static <T> Command<T> getCommand(List<Command<T>> commandList) {
-        Command<T> command;
+    public static Command getCommand(List<Command> commandList) {
+        Command command;
         do {
             command = getValidCommand(commandList);
 
@@ -27,14 +27,14 @@ public class CommandWindowOperator {
         return command;
     }
 
-    public static void printAllCommands(List<Command> commandList) {
+    public static void printAllCommands(List<String> commands) {
         System.out.print("Available commands: ");
 
-        for (int i = 0; i < commandList.size(); i++) {
+        for (int i = 0; i < commands.size(); i++) {
             if (i == 0) {
-                System.out.print(commandList.get(i).getCommandName());
+                System.out.print(commands.get(i));
             } else {
-                System.out.print(", " + commandList.get(i).getCommandName());
+                System.out.print(", " + commands.get(i));
             }
         }
         System.out.println();
@@ -42,8 +42,8 @@ public class CommandWindowOperator {
     }
 
 
-    private static <T> Command<T> getValidCommand(List<Command<T>> commandList) {
-        Optional<Command<T>> playerInputCommand;
+    private static Command getValidCommand(List<Command> commandList) {
+        Optional<Command> playerInputCommand;
         boolean isAbsent;
         do {
             playerInputCommand = getInputCommand(commandList);
@@ -58,12 +58,15 @@ public class CommandWindowOperator {
         return playerInputCommand.get();
     }
 
-    private static <T> Optional<Command<T>> getInputCommand(List<Command<T>> commandList) {
+    private static Optional<Command> getInputCommand(List<Command> commandList) {
         String[] splitInput = getSplitInput();
 
         return commandList
                 .stream()
-                .filter(command -> command.isMatched(splitInput))
+                .filter(command -> {
+                    command.setInputCommand(splitInput);
+                    return command.isMatched();
+                })
                 .findFirst();
     }
 

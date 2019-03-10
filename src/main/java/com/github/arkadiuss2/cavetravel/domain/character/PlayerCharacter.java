@@ -43,7 +43,7 @@ public class PlayerCharacter extends BasicCharacter {
 
     @Override
     public String toString() {
-        return "Wanderer " + getName();
+        return "Wanderer " + getName() + super.toString();
     }
 
 

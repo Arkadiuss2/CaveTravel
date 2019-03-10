@@ -31,4 +31,11 @@ public class Strength implements Skill {
 
         return Objects.hash(value);
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "value=" + value +
+                '}';
+    }
 }

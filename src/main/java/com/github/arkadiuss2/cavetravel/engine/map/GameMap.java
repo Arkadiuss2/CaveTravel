@@ -56,7 +56,7 @@ public class    GameMap {
     @Override
     public String toString() {
         return "GameMap{" +
-                "places=" + Arrays.toString(places) +
+                "places=" + Arrays.deepToString(places) +
                 '}';
     }
 }

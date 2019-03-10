@@ -1,10 +1,15 @@
 package com.github.arkadiuss2.cavetravel.engine.map.commands;
 
-import com.github.arkadiuss2.cavetravel.engine.commands.CommandCategory;
+import com.github.arkadiuss2.cavetravel.engine.Engine;
+import com.github.arkadiuss2.cavetravel.engine.persistance.GameData;
 
 import java.util.Optional;
 
-public class RightGoCommand extends AbstractGoCommand<Direction> {
+public class RightGoCommand extends AbstractGoCommand {
+
+    public RightGoCommand(Engine engine) {
+        super(engine);
+    }
 
     @Override
     public String getCommandName() {
@@ -12,8 +17,8 @@ public class RightGoCommand extends AbstractGoCommand<Direction> {
     }
 
     @Override
-    public boolean isMatched(String[] splitInput) {
-        return isGoCommand(splitInput) && isRight(splitInput[1]);
+    public boolean isMatched() {
+        return isGoCommand(getSplitInput()) && isRight(getSplitInput()[1]);
     }
 
     private boolean isRight(String value) {
@@ -22,14 +27,9 @@ public class RightGoCommand extends AbstractGoCommand<Direction> {
     }
 
     @Override
-    public CommandCategory getCategory() {
-        return null;
-    }
-
-    @Override
-    public Direction execute() {
+    public GameData execute() {
         System.out.println("You went RIGHT");
-        return Direction.RIGHT;
+        return getEngine().goRight();
     }
 
 
