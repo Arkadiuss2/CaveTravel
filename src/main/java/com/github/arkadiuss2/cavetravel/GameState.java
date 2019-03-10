@@ -1,6 +1,6 @@
 package com.github.arkadiuss2.cavetravel;
 
-import com.github.arkadiuss2.cavetravel.engine.commands.Command;
+import com.github.arkadiuss2.cavetravel.application.engine.commands.Command;
 
 import java.util.List;
 

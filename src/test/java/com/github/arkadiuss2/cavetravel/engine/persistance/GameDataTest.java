@@ -1,13 +1,14 @@
 package com.github.arkadiuss2.cavetravel.engine.persistance;
 
+import com.github.arkadiuss2.cavetravel.application.engine.persistance.GameData;
 import com.github.arkadiuss2.cavetravel.domain.character.CharacterI;
 import com.github.arkadiuss2.cavetravel.domain.character.PlayerCharacter;
 import com.github.arkadiuss2.cavetravel.domain.character.skill.Strength;
 import com.github.arkadiuss2.cavetravel.domain.places.scary.ScaryPlace;
-import com.github.arkadiuss2.cavetravel.engine.CharacterGenerator;
-import com.github.arkadiuss2.cavetravel.engine.map.GameMap;
-import com.github.arkadiuss2.cavetravel.engine.map.MapGenerator;
-import com.github.arkadiuss2.cavetravel.engine.map.places.Place;
+import com.github.arkadiuss2.cavetravel.domain.character.CharacterGenerator;
+import com.github.arkadiuss2.cavetravel.application.engine.map.GameMap;
+import com.github.arkadiuss2.cavetravel.application.engine.map.MapGenerator;
+import com.github.arkadiuss2.cavetravel.application.engine.map.places.Place;
 
 import java.util.List;
 

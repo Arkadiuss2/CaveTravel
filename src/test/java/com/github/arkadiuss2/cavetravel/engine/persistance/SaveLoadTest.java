@@ -1,5 +1,8 @@
 package com.github.arkadiuss2.cavetravel.engine.persistance;
 
+import com.github.arkadiuss2.cavetravel.application.engine.persistance.GameData;
+import com.github.arkadiuss2.cavetravel.application.engine.persistance.Load;
+import com.github.arkadiuss2.cavetravel.application.engine.persistance.Save;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.JAXBException;

@@ -1,15 +1,21 @@
 package com.github.arkadiuss2.cavetravel;
 
-import com.github.arkadiuss2.cavetravel.engine.Engine;
-import com.github.arkadiuss2.cavetravel.engine.FightEngine;
-import com.github.arkadiuss2.cavetravel.engine.StoryTeller;
-import com.github.arkadiuss2.cavetravel.engine.cmd.commands.*;
-import com.github.arkadiuss2.cavetravel.engine.commands.Command;
-import com.github.arkadiuss2.cavetravel.engine.commands.StatisticCommand;
-import com.github.arkadiuss2.cavetravel.engine.map.commands.BotGoCommand;
-import com.github.arkadiuss2.cavetravel.engine.map.commands.LeftGoCommand;
-import com.github.arkadiuss2.cavetravel.engine.map.commands.RightGoCommand;
-import com.github.arkadiuss2.cavetravel.engine.map.commands.TopGoCommand;
+import com.github.arkadiuss2.cavetravel.application.cmd.CommandWindowOperator;
+import com.github.arkadiuss2.cavetravel.application.cmd.ConsoleInput;
+import com.github.arkadiuss2.cavetravel.application.cmd.Input;
+import com.github.arkadiuss2.cavetravel.application.engine.commands.Command;
+import com.github.arkadiuss2.cavetravel.application.engine.commands.cmd.*;
+import com.github.arkadiuss2.cavetravel.application.engine.commands.game.StatisticCommand;
+import com.github.arkadiuss2.cavetravel.application.engine.commands.game.map.BotGoCommand;
+import com.github.arkadiuss2.cavetravel.application.engine.commands.game.map.LeftGoCommand;
+import com.github.arkadiuss2.cavetravel.application.engine.commands.game.map.RightGoCommand;
+import com.github.arkadiuss2.cavetravel.application.engine.commands.game.map.TopGoCommand;
+import com.github.arkadiuss2.cavetravel.application.engine.core.Engine;
+import com.github.arkadiuss2.cavetravel.application.engine.core.SimpleEngine;
+import com.github.arkadiuss2.cavetravel.application.fight_engine.FightEngine;
+import com.github.arkadiuss2.cavetravel.application.fight_engine.SimpleFightEngine;
+import com.github.arkadiuss2.cavetravel.application.story_teller.SimpleStoryTeller;
+import com.github.arkadiuss2.cavetravel.application.story_teller.StoryTeller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +27,8 @@ import java.util.stream.Collectors;
  */
 public class CaveFactory {
 
-    private final FightEngine fightEngine = new FightEngine();
-    private final StoryTeller storyTeller = new StoryTeller();
+    private final FightEngine fightEngine = new SimpleFightEngine();
+    private final StoryTeller storyTeller = new SimpleStoryTeller();
     private List<Command> playCommands;
     private List<Command> menuCommands;
     private Engine engine;
@@ -52,45 +58,45 @@ public class CaveFactory {
         return playCommands;
     }
 
-    public Engine getEngine() {
+    public Engine getSimpleEngine() {
         if (engine == null) {
-            engine = new Engine(getStoryTeller(), getFightEngine());
+            engine = new SimpleEngine(getSimpleStoryTeller(), getSimpleFightEngine());
         }
         return engine;
     }
 
 
-    public FightEngine getFightEngine() {
+    public FightEngine getSimpleFightEngine() {
         return fightEngine;
     }
 
-    public StoryTeller getStoryTeller() {
+    public StoryTeller getSimpleStoryTeller() {
         return storyTeller;
     }
 
     public Command getHelpCommand(List<Command> commandsNames) {
-        List<String> commandNames = commandsNames.stream().map(command -> command.getCommandName()).collect(Collectors.toList());
+        List<String> commandNames = commandsNames.stream().map(Command::getCommandName).collect(Collectors.toList());
         return new HelpCommand(commandNames);
     }
 
     public Command getNewCommand() {
-        return new NewCommand(getEngine());
+        return new NewCommand(getConsoleInput(),getSimpleEngine());
     }
 
     public Command getTopGoCommand() {
-        return new TopGoCommand(getEngine());
+        return new TopGoCommand(getSimpleEngine());
     }
 
     public Command getBotGoCommand() {
-        return new BotGoCommand(getEngine());
+        return new BotGoCommand(getSimpleEngine());
     }
 
     public Command getRightGoCommand() {
-        return new RightGoCommand(getEngine());
+        return new RightGoCommand(getSimpleEngine());
     }
 
     public Command getLeftGoCommand() {
-        return new LeftGoCommand(getEngine());
+        return new LeftGoCommand(getSimpleEngine());
     }
 
 
@@ -116,20 +122,27 @@ public class CaveFactory {
 
     public GameState getMenuGameState() {
         GameState menuState = new GameState();
-        List<Command> commandsMenuState = new ArrayList<>();
 
-        commandsMenuState.addAll(getMenuCommandList());
+        List<Command> commandsMenuState = new ArrayList<>(getMenuCommandList());
         commandsMenuState.add(getHelpCommand(getMenuCommandList()));
         menuState.setCommands(commandsMenuState);
         return menuState;
     }
 
     public Command getStatisticCommand() {
-        return new StatisticCommand(getEngine());
+        return new StatisticCommand(getSimpleEngine());
     }
 
-    public Command getExitCommand(){
+    public Command getExitCommand() {
         return new ExitCommand();
+    }
+
+    public CommandWindowOperator geCommandWindowOperator() {
+        return new CommandWindowOperator(getConsoleInput());
+    }
+
+    private Input getConsoleInput() {
+        return new ConsoleInput();
     }
 
 }

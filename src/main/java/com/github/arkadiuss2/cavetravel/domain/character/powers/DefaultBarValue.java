@@ -1,6 +1,6 @@
 package com.github.arkadiuss2.cavetravel.domain.character.powers;
 
-import com.github.arkadiuss2.cavetravel.domain.character.WrongValueCharacterException;
+import com.github.arkadiuss2.cavetravel.domain.character.exceptions.WrongValueCharacterException;
 
 import java.util.Objects;
 

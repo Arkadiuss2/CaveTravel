@@ -4,9 +4,6 @@ import com.github.arkadiuss2.cavetravel.domain.character.powers.BarValue;
 import com.github.arkadiuss2.cavetravel.domain.character.powers.HealthPowerValue;
 import com.github.arkadiuss2.cavetravel.domain.character.skill.Strength;
 
-import java.util.List;
-import java.util.Optional;
-
 public interface CharacterI {
 
     String getName();

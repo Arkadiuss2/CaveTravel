@@ -1,7 +1,8 @@
 package com.github.arkadiuss2.cavetravel;
 
-import com.github.arkadiuss2.cavetravel.engine.cmd.CommandWindowOperator;
-import com.github.arkadiuss2.cavetravel.engine.persistance.GameData;
+import com.github.arkadiuss2.cavetravel.application.cmd.CommandWindowOperator;
+import com.github.arkadiuss2.cavetravel.application.engine.commands.Command;
+import com.github.arkadiuss2.cavetravel.application.engine.persistance.GameData;
 
 public class Start {
 
@@ -14,6 +15,7 @@ public class Start {
 
     private static void startGame(CaveFactory caveFactory) {
 
+        CommandWindowOperator commandWindowOperator = caveFactory.geCommandWindowOperator();
         GameState actualGameState = caveFactory.getMenuGameState();
 
         welcomeMessage();
@@ -21,7 +23,9 @@ public class Start {
 
         GameData gameData;
         do {
-            gameData = CommandWindowOperator.getCommand(actualGameState.getCommands()).execute();
+            Command command = commandWindowOperator.getCommand(actualGameState.getCommands());
+            gameData = command.execute();
+
             if (gameData.isGameActive()) {
                 actualGameState = caveFactory.getActiveGameState();
             } else {
