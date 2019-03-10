@@ -24,9 +24,9 @@ Command line game about cave traveling.
 
 ###Assumptions
 - open to extensions:
-    + Engine, FightEngine, StoryTeller implementations should be easily substitution with existing once
-    + New commands implementations should be added only in CaveFactory to start working.
-    + Project could be even more expandable but it all depends on: what are the business requirements   
+    + New Engine, FightEngine, StoryTeller implementations should be easily exchangeable with existing once
+    + Add new Commands implementations to CaveFactory to start working.
+    + Project can be even more expandable but "What are the business requirements?".   
 - easy to add new content: 
     + characters
     + monsters
@@ -37,10 +37,9 @@ Command line game about cave traveling.
     + size optimisations + fast (no human-readable)(best pick)- e.g. ProtoBuff, Avro 
 
 
-
 Possible improvements:
 
-- Tests - all classes should have unit tests (maybe without purely pojo) + E2E tests. Because of lack of time I choose to coverage only [SimpleEngineTest](/com.github.arkadiuss2.cavetravel.application.engine.core.SimpleEngineTest.java)
+- Tests - all classes should have unit tests (maybe without purely pojo) + E2E tests. Because of lack of time I choose to coverage only [SimpleEngineTest](https://github.com/Arkadiuss2/CaveTravel/blob/master/src/test/java/com/github/arkadiuss2/cavetravel/application/engine/core/SimpleEngineTest.java)
 - CaveFactory change to Spring IOC
 - System.out.println - could be changed to e.g. SomePrint.showMessage("message_key"). Class could for example get messages from properties file then show message in different language, persist it etc.
 - Character/Place/Monster creator could be created/added via builder pattern.
